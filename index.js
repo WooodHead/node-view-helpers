@@ -91,7 +91,7 @@ function createPagination(req) {
       str += '<li class="disabled"><a>1</a></li>'
     } else {
       // str += '<li><a href="/products/1">First</a></li>'
-      str += '<li><a href="/products/1">1</a></li>'
+      str += '<li><a href="/1">1</a></li>'
     }
 
     var i = (Number(current) > 5 ? Number(current) - 4 + 1 : 2)
@@ -102,7 +102,7 @@ function createPagination(req) {
       if (i == current) {
         str = str + '<li class="active"><a>' + i + '</a></li>'
       } else {
-        str = str + '<li><a href="/products/' + i + ' ">' + i + '</a></li>'
+        str = str + '<li><a href="/' + i + ' ">' + i + '</a></li>'
       }
       if (i == Number(current) + 4 && i < pages) {
         str = str + '<li class="disabled"><a>...</a></li>'
@@ -113,7 +113,7 @@ function createPagination(req) {
       str += '<li class="disabled"><a>' + pages + '</a></li>'
       // str += '<li class="disabled"><a>Last</a></li>'
     } else {
-      str += '<li><a href="/products/' + pages + '">' + pages + '</a></li>'
+      str += '<li><a href="/' + pages + '">' + pages + '</a></li>'
       // str += '<li><a href="/products/' + pages + '">Last</a></li>'
     }
 
