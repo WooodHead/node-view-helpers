@@ -1,10 +1,9 @@
-
 /**
  * Module dependencies.
  */
 
-var url = require('url')
-  , qs = require('querystring')
+var url = require('url'),
+  qs = require('querystring')
 
 /**
  * Helpers method
@@ -14,13 +13,13 @@ var url = require('url')
  * @api public
  */
 
-function helpers (name) {
+function helpers(name) {
   return function (req, res, next) {
     res.locals.appName = name || 'App'
     res.locals.title = name || 'App'
     res.locals.req = req
     res.locals.isActive = function (link) {
-      if (link === '/' ) {
+      if (link === '/') {
         return req.url === '/' ? 'active' : ''
       } else {
         return req.url.indexOf(link) !== -1 ? 'active' : ''
@@ -81,21 +80,41 @@ module.exports = helpers
  * @api private
  */
 
-function createPagination (req) {
-  return function createPagination (pages, page) {
+function createPagination(req) {
+  return function createPagination(pages, page) {
     var params = qs.parse(url.parse(req.url).query)
+
     var str = ''
 
-    params.page = 1
-    var clas = page == 1 ? "active" : "no"
+    if (current == 1) {
+      // str += '<li class="disabled"><a>First</a></li>'
+      str += '<li class="disabled"><a>1</a></li>'
+    } else {
+      // str += '<li><a href="/products/1">First</a></li>'
+      str += '<li><a href="/products/1">1</a></li>'
+    }
 
-    for (var p = 1; p <= pages; p++) {
-      params.page = p
-      clas = page == p ? "active" : "no"
+    var i = (Number(current) > 5 ? Number(current) - 4 + 1 : 2)
+    if (i !== 2) {
+      str += '<li class="disabled"><a>...</a></li>'
+    }
+    for (; i <= (Number(current) + 4) && i < pages; i++) {
+      if (i == current) {
+        str = str + '<li class="active"><a>' + i + '</a></li>'
+      } else {
+        str = str + '<li><a href="/products/' + i + ' ">' + i + '</a></li>'
+      }
+      if (i == Number(current) + 4 && i < pages) {
+        str = str + '<li class="disabled"><a>...</a></li>'
+      }
+    }
 
-      var href = '?' + qs.stringify(params)
-
-      str += '<li class="'+clas+'"><a href="'+ href +'">'+ p +'</a></li>'
+    if (current == pages) {
+      str += '<li class="disabled"><a>' + pages + '</a></li>'
+      // str += '<li class="disabled"><a>Last</a></li>'
+    } else {
+      str += '<li><a href="/products/' + pages + '">' + pages + '</a></li>'
+      // str += '<li><a href="/products/' + pages + '">Last</a></li>'
     }
 
     return str
@@ -110,10 +129,10 @@ function createPagination (req) {
  * @api private
  */
 
-function formatDate (date) {
+function formatDate(date) {
   date = new Date(date)
-  var monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
-  return monthNames[date.getMonth()]+' '+date.getDate()+', '+date.getFullYear()
+  var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear()
 }
 
 /**
@@ -124,12 +143,12 @@ function formatDate (date) {
  * @api private
  */
 
-function formatDatetime (date) {
+function formatDatetime(date) {
   date = new Date(date)
   var hour = date.getHours();
-  var minutes = date.getMinutes() < 10
-    ? '0' + date.getMinutes().toString()
-    : date.getMinutes();
+  var minutes = date.getMinutes() < 10 ?
+    '0' + date.getMinutes().toString() :
+    date.getMinutes();
 
   return formatDate(date) + ' ' + hour + ':' + minutes;
 }
@@ -142,6 +161,6 @@ function formatDatetime (date) {
  * @api private
  */
 
-function stripScript (str) {
+function stripScript(str) {
   return str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
 }
