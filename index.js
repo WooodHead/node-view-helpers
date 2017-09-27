@@ -81,7 +81,7 @@ module.exports = helpers
  */
 
 function createPagination(req) {
-  return function createPagination(pages, page) {
+  return function createPagination(pages, current) {
     var params = qs.parse(url.parse(req.url).query)
 
     var str = ''
