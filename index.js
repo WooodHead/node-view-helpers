@@ -87,7 +87,7 @@ function createPagination(req) {
 
     if (current == 1) {
       // str += '<li class="disabled"><a>First</a></li>'
-      str += '<li class="disabled"><a>1</a></li>'
+      str += '<li class="active"><a>1</a></li>'
     } else {
       // str += '<li><a href="/products/1">First</a></li>'
       params.page = 1
@@ -113,7 +113,7 @@ function createPagination(req) {
     }
 
     if (current == pages) {
-      str += '<li class="disabled"><a>' + pages + '</a></li>'
+      str += '<li class="active"><a>' + pages + '</a></li>'
       // str += '<li class="disabled"><a>Last</a></li>'
     } else {
       params.page = pages
