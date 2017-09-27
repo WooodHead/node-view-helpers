@@ -85,44 +85,45 @@ function createPagination(req) {
     var params = qs.parse(url.parse(req.url).query)
     var str = ''
     current = Number(current)
-
+    pages = pages > 0 ? pages : 1
+    
     if (current == 1) {
-        str += '<li class="active"><a>1</a></li>'
+      str += '<li class="active"><a>1</a></li>'
     } else {
-        params.page = 1
-        var href = '?' + qs.stringify(params)
-        str += '<li><a href="' + href + '">1</a></li>'
+      params.page = 1
+      var href = '?' + qs.stringify(params)
+      str += '<li><a href="' + href + '">1</a></li>'
     }
 
     var beforeAfter = 3
 
     var i;
     if (current > beforeAfter + 2) {
-        i = current - beforeAfter
-        str += '<li class="disabled"><a>...</a></li>'
+      i = current - beforeAfter
+      str += '<li class="disabled"><a>...</a></li>'
     } else {
-        i = 2
+      i = 2
     }
 
     for (; i <= (current + beforeAfter) && i < pages; i++) {
-        if (i == current) {
-            str = str + '<li class="active"><a>' + i + '</a></li>'
-        } else {
-            params.page = i
-            var href = '?' + qs.stringify(params)
-            str += '<li><a href="' + href + '">' + i + '</a></li>'
-        }
-        if (i == current + beforeAfter && i < pages - 1) {
-            str = str + '<li class="disabled"><a>...</a></li>'
-        }
+      if (i == current) {
+        str = str + '<li class="active"><a>' + i + '</a></li>'
+      } else {
+        params.page = i
+        var href = '?' + qs.stringify(params)
+        str += '<li><a href="' + href + '">' + i + '</a></li>'
+      }
+      if (i == current + beforeAfter && i < pages - 1) {
+        str = str + '<li class="disabled"><a>...</a></li>'
+      }
     }
 
     if (current == pages) {
-        str += '<li class="active"><a>' + pages + '</a></li>'
+      str += '<li class="active"><a>' + pages + '</a></li>'
     } else {
-        params.page = pages
-        var href = '?' + qs.stringify(params)
-        str += '<li><a href="' + href + '">' + pages + '</a></li>'
+      params.page = pages
+      var href = '?' + qs.stringify(params)
+      str += '<li><a href="' + href + '">' + pages + '</a></li>'
     }
 
     return str
