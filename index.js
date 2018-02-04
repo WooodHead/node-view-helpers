@@ -87,6 +87,15 @@ function createPagination(req) {
     current = Number(current)
     pages = pages > 0 ? pages : 1
 
+    var previous = current - 1;
+    var next = current + 1;
+
+    if (previous > 0) {
+      params.page = previous
+      var href = '?' + qs.stringify(params)
+      str += '<li class="prev-button"><a href="' + href + '">Prev</a></li>'
+    }
+
     if (current == 1) {
       str += '<li class="active"><a>1</a></li>'
     } else {
@@ -127,7 +136,11 @@ function createPagination(req) {
         str += '<li><a href="' + href + '">' + pages + '</a></li>'
       }
     }
-
+    if (current < pages) {
+      params.page = next
+      var href = '?' + qs.stringify(params)
+      str += '<li class="next-button"><a href="' + href + '">Next</a></li>'
+    }
     return str
   }
 }
